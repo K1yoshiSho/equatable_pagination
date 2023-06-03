@@ -103,14 +103,11 @@ class _HomePageState extends State<HomePage> {
           if (!mounted) {
             return;
           }
-          var newData = await _dataBloc.repository.fetchData(_currentPage); // Fetch the new data
+          var newData = await _dataBloc.repository.fetchData(_currentPage);
           getIt<Talker>().good("listEquals: ${listEquals(newData.results, _list)}");
           if (!listEquals(newData.results, _list)) {
-            setState(() {
-              _list = newData.results;
-              _limit = newData.lastPage;
-              _nextPage = newData.nextPage;
-            });
+            _list.clear();
+            _dataBloc.add(const GetList(index: 1));
           }
           _controller.finishRefresh();
           _controller.resetFooter();
